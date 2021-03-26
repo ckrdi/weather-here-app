@@ -58,14 +58,25 @@ function setup() {
       const data = await response.json();
       // console.log(data);
 
+
+
+      // send the lat lon data to server to be used to call weather api
       const api_url = `weather/${lat},${lon}`;
+      // receive the weather data
       const weather_response = await fetch(api_url);
       const json = await weather_response.json();
       // console.log(json);
+      // convert the temperature to celcius from kelvin
       const mainTemp = json.main.temp - 273.15;
       const feelsTemp = json.main.feels_like - 273.15;
+      // display the data to the webpage
       document.getElementById('temperature').textContent = mainTemp.toFixed(0);
       document.getElementById('feelsLike').textContent = feelsTemp.toFixed(0);
+
+      // fetch a random dog image
+      const dog_response = await fetch('/dog');
+      const dog_json = await dog_response.json();
+      document.getElementById('randomDog').src = dog_json.message;
     })
   })
 };
