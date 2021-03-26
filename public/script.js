@@ -31,11 +31,12 @@ function setup() {
       const lon = position.coords.longitude;
       const timestamp = Date.now();
       // assign the value of input to a variable
-      const text = document.getElementById('mood').value;
+      // const text = document.getElementById('mood').value;
 
       // display the location to the webpage
-      document.getElementById('lat').textContent = lat;
-      document.getElementById('lon').textContent = lon;
+      document.getElementById('lat').textContent = lat.toFixed(2);
+      document.getElementById('lon').textContent = lon.toFixed(2);
+      document.getElementById('localTime').textContent = new Date(timestamp).toLocaleString();
 
       // setting the map according to the geolocation
       mymap.setView([lat, lon], 15);
@@ -49,19 +50,22 @@ function setup() {
           // 'Content-Type': 'application/x-www-form-urlencoded',
         },
         body: JSON.stringify({
-          text,
           lat,
           lon,
           timestamp
         })
       });
       const data = await response.json();
-      console.log(data);
+      // console.log(data);
 
       const api_url = `weather/${lat},${lon}`;
       const weather_response = await fetch(api_url);
       const json = await weather_response.json();
-      console.log(json);
+      // console.log(json);
+      const mainTemp = json.main.temp - 273.15;
+      const feelsTemp = json.main.feels_like - 273.15;
+      document.getElementById('temperature').textContent = mainTemp.toFixed(0);
+      document.getElementById('feelsLike').textContent = feelsTemp.toFixed(0);
     })
   })
 };

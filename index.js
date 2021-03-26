@@ -31,7 +31,7 @@ app.use(express.json({limit: '1mb'}));
 
 // POST handler method
 app.post('/api', (request, response) => {
-  console.log('I got a request!');
+  console.log('I got a request to save some data!');
   const data = request.body
 
   // insert the data to database
@@ -44,6 +44,7 @@ app.post('/api', (request, response) => {
 
 // GET handler method
 app.get('/api', (request, response) => {
+  console.log('I got a request to query some data!');
   database.find({}, (err, data) => {
     if (err) {
       response.send('ERROR');
@@ -56,12 +57,13 @@ app.get('/api', (request, response) => {
 // node-fetch to fetch weather
 // and send the data to the client
 app.get('/weather/:latlon', async (request, response) => {
-  console.log(request.params);
+  console.log('sending request to weather API...');
+  // console.log(request.params);
   const latlon = request.params.latlon.split(',');
-  console.log(latlon);
+  // console.log(latlon);
   const lat = latlon[0];
   const lon = latlon[1];
-  console.log(lat, lon);
+  // console.log(lat, lon);
   const api_key = '';
   const weatherUrl = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${api_key}`;
   const fetchResponse = await fetch(weatherUrl);

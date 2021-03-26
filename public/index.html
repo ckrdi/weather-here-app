@@ -24,17 +24,20 @@
 <body>
   <h2>Weather Here App</h2>
   <a href="index.html">Home</a>
-  <a href="query.html">Data</a>
+  <a href="query.html">Data</a><br>
+  <div style="padding: 1em 0;"><button id="postRequest">Check in</button></div>
   <p>
     Latitude: <span id="lat"></span>&deg;<br>
-    Longitude: <span id="lon"></span>&deg;
+    Longitude: <span id="lon"></span>&deg;<br>
+    As of <span id="localTime"></span>
   </p>
+  <h1><span id="temperature"></span>&deg; C</h1>
+  <p>Feels like: <span id="feelsLike"></span>&deg; C</p>
   <div id="mapid"></div>
-  <form>
+  <!-- <form>
     <label>What is your mood today?</label>
     <input type="text" id="mood" placeholder="your mood">
-    <button id="postRequest">Submit</button>
-  </form>
+  </form> -->
   <script src="script.js"></script>
 </body>
 
