@@ -1,5 +1,5 @@
 // making the map and the tiles
-const mymap = L.map('mapid').setView([0, 0], 3);
+const mymap = L.map('mapid').setView([0, 0], 1);
 const attribution = '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors';
 const tileURL = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
 // tileLayer expects two arguments, one is the url path, 
@@ -39,9 +39,25 @@ function setup() {
       document.getElementById('localTime').textContent = new Date(timestamp).toLocaleString();
 
       // setting the map according to the geolocation
-      mymap.setView([lat, lon], 15);
+      mymap.setView([lat, lon], 12);
       marker.setLatLng([lat, lon]);
 
+      // send the lat lon data to server to be used to call weather api
+      const api_url = `weather/${lat},${lon}`;
+      // receive the weather data
+      const weather_response = await fetch(api_url);
+      const json = await weather_response.json();
+      console.log(json);
+      // convert the temperature to celcius from kelvin
+      const mainTemp = json.main.temp - 273.15;
+      const feelsTemp = json.main.feels_like - 273.15;
+      const weatherMain = json.weather[0].main;
+      const weatherDesc = json.weather[0].description;
+      // display the data to the webpage
+      document.getElementById('temperature').textContent = mainTemp.toFixed(0);
+      document.getElementById('feelsLike').textContent = feelsTemp.toFixed(0);
+      document.getElementById('weatherMain').textContent = weatherMain;
+      document.getElementById('weatherDesc').textContent = weatherDesc;
       // send the data to the server using fetch()
       const response = await fetch('/api', {
         method: 'POST',
@@ -52,26 +68,15 @@ function setup() {
         body: JSON.stringify({
           lat,
           lon,
+          weatherMain,
+          weatherDesc,
+          mainTemp,
+          feelsTemp,
           timestamp
         })
       });
       const data = await response.json();
       // console.log(data);
-
-
-
-      // send the lat lon data to server to be used to call weather api
-      const api_url = `weather/${lat},${lon}`;
-      // receive the weather data
-      const weather_response = await fetch(api_url);
-      const json = await weather_response.json();
-      // console.log(json);
-      // convert the temperature to celcius from kelvin
-      const mainTemp = json.main.temp - 273.15;
-      const feelsTemp = json.main.feels_like - 273.15;
-      // display the data to the webpage
-      document.getElementById('temperature').textContent = mainTemp.toFixed(0);
-      document.getElementById('feelsLike').textContent = feelsTemp.toFixed(0);
 
       // fetch a random dog image
       const dog_response = await fetch('/dog');
