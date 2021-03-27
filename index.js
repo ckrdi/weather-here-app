@@ -19,6 +19,9 @@ database.loadDatabase();
 // import the node-fetch
 const fetch = require('node-fetch');
 
+// import the dotenv
+require('dotenv').config()
+
 // have the app listen to request(s)
 app.listen(port, () => {
   console.log('listening at http://localhost:' + port)
@@ -69,7 +72,7 @@ app.get('/weather/:latlon', async (request, response) => {
   const lat = latlon[0];
   const lon = latlon[1];
   // console.log(lat, lon);
-  const api_key = '';
+  const api_key = process.env.API_KEY;
   const weatherUrl = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${api_key}`;
   const weatherResponse = await fetch(weatherUrl);
   const weather = await weatherResponse.json();
