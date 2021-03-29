@@ -5,7 +5,7 @@ const {
 } = require('express');
 const express = require('express');
 const app = express();
-const port = 3000;
+const port = process.env.PORT || 3000;
 
 // import the NeDB package
 const Datastore = require('nedb');
@@ -24,7 +24,7 @@ require('dotenv').config()
 
 // have the app listen to request(s)
 app.listen(port, () => {
-  console.log('listening at http://localhost:' + port)
+  console.log('listening at ' + port)
 });
 
 // use express middleware to serve static page
